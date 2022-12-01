@@ -4,6 +4,7 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Injectable()
 export class OrderService {
@@ -18,7 +19,9 @@ export class OrderService {
     });
   }
 
-  getOrderForm() {
-    return this.client.send<string, string>('form', 'Test').pipe();
+  postOrder(createOrderDto: CreateOrderDto) {
+    return this.client
+      .send<string, CreateOrderDto>('db/order', createOrderDto)
+      .pipe();
   }
 }
