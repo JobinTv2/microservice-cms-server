@@ -20,6 +20,10 @@ export class BookService {
     return this.client.send<string, string>('book', 'Test').pipe();
   }
 
+  getBook() {
+    return this.client.send<string, string>('db/book/get', 'test').pipe();
+  }
+
   postBook(createBookDto) {
     return (
       this, this.client.send<string, CreateBookDto>('db/book', createBookDto)

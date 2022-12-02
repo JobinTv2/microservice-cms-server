@@ -12,6 +12,11 @@ export class BookController {
     return this.bookService.getBookTradeForm();
   }
 
+  @Get()
+  getBook(): Observable<string> {
+    return this.bookService.getBook();
+  }
+
   @Post()
   createBook(@Body() createBookDto: CreateBookDto): Observable<string> {
     return this.bookService.postBook(createBookDto);
