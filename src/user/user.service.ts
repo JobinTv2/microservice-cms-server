@@ -32,4 +32,8 @@ export class UserService {
       loginUserDto,
     );
   }
+
+  findOne(id: string) {
+    return this.client.send<string, string>('db/user/get', id);
+  }
 }

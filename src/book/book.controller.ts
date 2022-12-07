@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 import { BookService } from './book.service';
 import { Observable } from 'rxjs';
 import { CreateBookDto } from './dto/create-book.dto';
+import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 
 @Controller('book')
 export class BookController {
@@ -12,6 +13,7 @@ export class BookController {
     return this.bookService.getBookTradeForm();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   getBook(): Observable<string> {
     return this.bookService.getBook();
