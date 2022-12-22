@@ -8,6 +8,7 @@ import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  // @UseGuards(JwtAuthGuard)
   @Get('/form')
   getBookTradeForm(): Observable<string> {
     return this.bookService.getBookTradeForm();
