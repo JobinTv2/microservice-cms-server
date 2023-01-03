@@ -8,17 +8,16 @@ import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
-  // @UseGuards(JwtAuthGuard)
   @Get('/form')
   getBookTradeForm(): Observable<string> {
     return this.bookService.getBookTradeForm();
   }
 
-  @Get('/todos/:id')
-  getTodos(@Req() req): Observable<string> {
-    const { id } = req.params;
-    return this.bookService.getTodos(id);
-  }
+  // @Get('/todos/:id')
+  // getTodos(@Req() req): Observable<string> {
+  //   const { id } = req.params;
+  //   return this.bookService.getTodos(id);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get()
@@ -26,6 +25,7 @@ export class BookController {
     return this.bookService.getBook();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   createBook(@Body() createBookDto: CreateBookDto): Observable<string> {
     return this.bookService.postBook(createBookDto);
