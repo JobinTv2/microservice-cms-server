@@ -22,13 +22,13 @@ export class UserService {
   }
 
   create(createUserDto: CreateUserDto) {
+    console.log('hii');
     return this.client
       .send<string, CreateUserDto>('db/user', createUserDto)
       .pipe();
   }
 
   login(loginUserDto: LoginUserDto) {
-    console.log('hii');
     return this.client.send<string, LoginUserDto>(
       '/db/user/login',
       loginUserDto,
