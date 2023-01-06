@@ -34,7 +34,6 @@ export class UserService {
     if (Object.prototype.hasOwnProperty.call(response, 'error')) {
       throw new BadRequestException(response.error);
     }
-
     return response;
   }
 
