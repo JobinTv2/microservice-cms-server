@@ -22,10 +22,12 @@ export class RolesGaurd implements CanActivate {
       return true;
     }
     const { user } = context.switchToHttp().getRequest();
-    if (requiredRole !== user.userData.role)
+    if (requiredRole !== user.userData.role) {
       throw new HttpException(
         `You don't have permission to access`,
         HttpStatus.FORBIDDEN,
       );
+    }
+    return true;
   }
 }
