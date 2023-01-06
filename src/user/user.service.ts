@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
@@ -27,13 +28,20 @@ export class UserService {
   }
 
   login(loginUserDto: LoginUserDto) {
+    console.log('hii');
     return this.client.send<string, LoginUserDto>(
       '/db/user/login',
       loginUserDto,
     );
   }
 
-  findOne(id: string) {
-    return this.client.send<string, string>('db/user/get', id);
+  async findOne(id: string) {
+    const user = await firstValueFrom(
+      this.client.send<string, string>('db/user/get', id),
+    );
+    if (Object.prototype.hasOwnProperty.call(user, 'error')) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 }
