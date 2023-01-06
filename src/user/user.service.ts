@@ -40,7 +40,10 @@ export class UserService {
       this.client.send<string, string>('db/user/get', id),
     );
     if (Object.prototype.hasOwnProperty.call(user, 'error')) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'User not found, provide a valid id',
+        HttpStatus.NOT_FOUND,
+      );
     }
     return user;
   }
