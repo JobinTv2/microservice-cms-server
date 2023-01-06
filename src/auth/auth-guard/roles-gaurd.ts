@@ -3,6 +3,8 @@ import {
   ExecutionContext,
   Injectable,
   HttpStatus,
+  HttpException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { HttpExceptionFilter } from 'src/filters/exception.filter';
@@ -21,7 +23,7 @@ export class RolesGaurd implements CanActivate {
     }
     const { user } = context.switchToHttp().getRequest();
     if (requiredRole !== user.userData.role)
-      throw new HttpExceptionFilter(
+      throw new HttpException(
         `You don't have permission to access`,
         HttpStatus.FORBIDDEN,
       );
