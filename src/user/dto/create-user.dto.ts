@@ -13,7 +13,7 @@ export class CreateUserDto {
 
   @IsMobilePhone()
   @IsNotEmpty()
-  phone: number;
+  phone: string;
 
   @IsString()
   @IsNotEmpty()

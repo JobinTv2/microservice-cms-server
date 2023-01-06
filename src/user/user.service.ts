@@ -1,4 +1,9 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Injectable,
+  HttpException,
+  HttpStatus,
+  BadRequestException,
+} from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -21,11 +26,16 @@ export class UserService {
     });
   }
 
-  create(createUserDto: CreateUserDto) {
-    console.log('hii');
-    return this.client
-      .send<string, CreateUserDto>('db/user', createUserDto)
-      .pipe();
+  async create(createUserDto: CreateUserDto) {
+    const response: { error: any } | any = await firstValueFrom(
+      this.client.send<string, CreateUserDto>('db/user', createUserDto).pipe(),
+    );
+
+    if (Object.prototype.hasOwnProperty.call(response, 'error')) {
+      throw new BadRequestException(response.error);
+    }
+
+    return response;
   }
 
   login(loginUserDto: LoginUserDto) {
