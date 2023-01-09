@@ -39,8 +39,10 @@ export class BookService {
   }
 
   postBook(createBookDto) {
-    return (
-      this, this.client.send<string, CreateBookDto>('db/book', createBookDto)
-    );
+    return this.client.send<string, CreateBookDto>('db/book', createBookDto);
+  }
+
+  uploadFile(file) {
+    return this.client.send<string, any>('/book/upload', file);
   }
 }
