@@ -1,16 +1,25 @@
-import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  UseFilters,
+} from '@nestjs/common';
 import { BookService } from './book.service';
 import { Observable } from 'rxjs';
 import { CreateBookDto } from './dto/create-book.dto';
 import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
+import { HttpExceptionFilter } from 'src/filters/exception.filter';
 
 @Controller('book')
+@UseFilters(HttpExceptionFilter)
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('/form')
-  getBookTradeForm(): Observable<string> {
+  getBookTradeForm() {
     return this.bookService.getBookTradeForm();
   }
 

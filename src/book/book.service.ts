@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { InternalServerErrorException } from '@nestjs/common/exceptions';
 import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 import { CreateBookDto } from './dto/create-book.dto';
 
 @Injectable()
@@ -16,8 +18,16 @@ export class BookService {
     });
   }
 
-  getBookTradeForm() {
-    return this.client.send<string, string>('book', 'Test').pipe();
+  async getBookTradeForm() {
+    const result = await firstValueFrom(
+      this.client.send<string, string>('book', 'Test').pipe(),
+    );
+    if (Object.prototype.hasOwnProperty.call(result, 'error')) {
+      throw new InternalServerErrorException(
+        'The server encountered an error and could not complete your request',
+      );
+    }
+    return result;
   }
 
   getBook() {
