@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 1
+    },
+    "auditLog": ".a024d99be6f2408cf8bd77691ab4aca35058d177-audit.json",
+    "files": [
+        {
+            "date": 1673358129070,
+            "name": "UsedBooks.log-2023-01-10-19.log",
+            "hash": "e62d9ff6594d2b34bd72b3e0c2e96989d1aec23113be4135f33f2009408af1d4"
+        }
+    ],
+    "hashType": "sha256"
+}

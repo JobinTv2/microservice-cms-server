@@ -11,11 +11,22 @@ import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
+import 'winston-daily-rotate-file';
 
 const { combine, timestamp, printf, errors, json } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
 });
+
+const transport = new winston.transports.DailyRotateFile({
+  filename: 'UsedBooks.log-%DATE%.log',
+  datePattern: 'YYYY-MM-DD-HH',
+  maxSize: '20m',
+  maxFiles: '1d',
+  format: combine(timestamp(), json(), winston.format.prettyPrint(), errors()),
+  level: 'error',
+});
+
 @Module({
   imports: [
     OrderModule,
@@ -60,6 +71,7 @@ const logFormat = printf(({ level, message, timestamp }) => {
             errors(),
           ),
         }),
+        transport,
       ],
     }),
   ],
