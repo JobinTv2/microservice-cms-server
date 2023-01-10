@@ -23,7 +23,6 @@ export class AppService {
   }
 
   public testService(dto: string) {
-    this.logger.warn('Hii');
     return this.client.send<string, string>('test', dto).pipe();
   }
 }

@@ -48,12 +48,17 @@ const logFormat = printf(({ level, message, timestamp }) => {
         }),
         new winston.transports.File({
           filename: 'combined.log',
-          format: combine(timestamp(), json()),
+          format: combine(timestamp(), json(), winston.format.prettyPrint()),
         }),
         new winston.transports.File({
           filename: 'app-error.log',
           level: 'error',
-          format: combine(timestamp(), json()),
+          format: combine(
+            timestamp(),
+            json(),
+            winston.format.prettyPrint(),
+            errors(),
+          ),
         }),
       ],
     }),
