@@ -1,14 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject, LoggerService } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston/dist/winston.constants';
 
 @Injectable()
 export class AppService {
   private client: ClientProxy;
-  constructor() {
+  constructor(
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
+  ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: {
@@ -19,6 +23,7 @@ export class AppService {
   }
 
   public testService(dto: string) {
+    this.logger.warn('Hii');
     return this.client.send<string, string>('test', dto).pipe();
   }
 }

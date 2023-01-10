@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { CreateBookDto } from './dto/create-book.dto';
 import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 import { HttpExceptionFilter } from 'src/filters/exception.filter';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express/multer';
 
