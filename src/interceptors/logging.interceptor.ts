@@ -26,9 +26,7 @@ export class LoggingInerceptor implements NestInterceptor {
       .pipe(
         tap(() =>
           this.logger.log(
-            `Custom logger - Status ${statusCode} METHOD ${method}  ${path}  ${
-              Date.now() - now
-            }ms`,
+            `${statusCode} || ${method} - ${path}  ${Date.now() - now}ms`,
           ),
         ),
       );
