@@ -18,13 +18,39 @@ const logFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
 });
 
-const transport = new winston.transports.DailyRotateFile({
-  filename: 'UsedBooks.log-%DATE%.log',
+const transportError = new winston.transports.DailyRotateFile({
+  filename: './logs/server-error.log-%DATE%.log',
   datePattern: 'YYYY-MM-DD-HH',
   maxSize: '20m',
   maxFiles: '1d',
   format: combine(timestamp(), json(), winston.format.prettyPrint(), errors()),
   level: 'error',
+});
+
+const transportCombined = new winston.transports.DailyRotateFile({
+  filename: './logs/server-combined.log-%DATE%.log',
+  level: 'error',
+  format: combine(
+    timestamp(),
+    json(),
+    winston.format.prettyPrint(),
+    errors({ stack: true }),
+  ),
+  maxSize: '20m',
+  maxFiles: '1d',
+});
+
+const transportWarn = new winston.transports.DailyRotateFile({
+  filename: './logs/server-warn.log-%DATE%.log',
+  format: combine(
+    timestamp(),
+    json(),
+    winston.format.prettyPrint(),
+    errors({ stack: true }),
+  ),
+  maxSize: '20m',
+  maxFiles: '1d',
+  level: 'warn',
 });
 
 @Module({
@@ -61,17 +87,9 @@ const transport = new winston.transports.DailyRotateFile({
           filename: 'combined.log',
           format: combine(timestamp(), json(), winston.format.prettyPrint()),
         }),
-        new winston.transports.File({
-          filename: 'app-error.log',
-          level: 'error',
-          format: combine(
-            timestamp(),
-            json(),
-            winston.format.prettyPrint(),
-            errors(),
-          ),
-        }),
-        transport,
+        transportError,
+        transportWarn,
+        transportCombined,
       ],
     }),
   ],

@@ -17,7 +17,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     // this.logger.error(`stack - ${exception.stack}`);
-    this.logger.error(`${status} || ${exception.message} - ${request.url}`);
+    this.logger.error(
+      `${status} || ${exception.message} - ${request.url}`,
+      exception.stack,
+    );
 
     if (status !== 400) {
       response.status(status).json({
