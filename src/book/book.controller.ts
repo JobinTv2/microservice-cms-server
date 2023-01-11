@@ -15,11 +15,16 @@ import { JwtAuthGuard } from 'src/auth/auth-guard/jwt-auth-guard';
 import { HttpExceptionFilter } from 'src/filters/exception.filter';
 import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express/multer';
+import { InjectQueue } from '@nestjs/bull/dist/decorators';
+import { Queue } from 'bull';
 
 @Controller('book')
 @UseFilters(HttpExceptionFilter)
 export class BookController {
-  constructor(private readonly bookService: BookService) {}
+  constructor(
+    private readonly bookService: BookService,
+    @InjectQueue('file-upload-queue') private fileQueue: Queue,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get('/form')
@@ -56,7 +61,9 @@ export class BookController {
     }),
   )
   fileUploag(@UploadedFile() file) {
-    return { status: 'Uploaded' };
+    // return { status: 'Uploaded' };
+    this.fileQueue.add('csvfilejob', { file });
     // return this.bookService.uploadFile(file);
+    // return 'Hiii';
   }
 }

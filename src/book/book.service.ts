@@ -31,6 +31,7 @@ export class BookService {
   }
 
   getBook() {
+    console.log('h');
     return this.client.send<string, string>('db/book/get', 'test').pipe();
   }
 

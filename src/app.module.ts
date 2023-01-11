@@ -10,9 +10,9 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
 import { WinstonModule } from 'nest-winston';
-import { BullModule } from '@nestjs/bull';
 import * as winston from 'winston';
 import 'winston-daily-rotate-file';
+import { UploadProcessor } from './book/upload.processor';
 
 const { combine, timestamp, printf, errors, json } = winston.format;
 const logFormat = printf(({ level, message, timestamp }) => {
@@ -79,15 +79,6 @@ const transportWarn = new winston.transports.DailyRotateFile({
         transportWarn,
         transportCombined,
       ],
-    }),
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
-    }),
-    BullModule.registerQueue({
-      name: 'upload-queue',
     }),
   ],
   controllers: [AppController, OrderController, UserController],
