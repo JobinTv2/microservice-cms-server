@@ -60,15 +60,6 @@ const transportWarn = new winston.transports.DailyRotateFile({
     UserModule,
     AuthModule,
     WinstonModule.forRoot({
-      // format: winston.format.combine(
-      //   winston.format.simple(),
-      //   errors({ stack: true }),
-      //   winston.format.timestamp({
-      //     format: 'YYYY-MM-DD HH:mm:ss',
-      //   }),
-      //   // winston.format.simple(),
-      //   // winston.format.colorize(),
-      // ),
       format: combine(
         winston.format.colorize(),
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
@@ -77,11 +68,7 @@ const transportWarn = new winston.transports.DailyRotateFile({
       ),
       transports: [
         new winston.transports.Console({
-          // format: winston.format.combine(
-          //   winston.format.timestamp(),
-          //   winston.format.ms(),
-          //   winston.format.cli(),
-          // ),
+          format: winston.format.combine(errors({ stack: true })),
         }),
         new winston.transports.File({
           filename: 'combined.log',
